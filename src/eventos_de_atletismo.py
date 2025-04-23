@@ -3,7 +3,8 @@
 import re
 from datetime import datetime
 from pruebas import menu_pruebas  # Importamos el menú de pruebas desde módulo externo
-
+from eventos import menu_eventos  # Importamos el menú de eventos desde módulo externo
+from atletas import menu_atletas  # Importamos el menú de atletas desde módulo externo
 # ----------------------------
 # Estructuras de datos globales
 # ----------------------------
@@ -99,15 +100,6 @@ def listar_disciplinas():
         medida_texto = "Tiempo" if medida == "T" else "Metros"
         print(f"{nombre:<30} {medida_texto}")
     input("\nPresione ENTER para continuar...")
-
-def menu_atletas():
-    print("\n[Submenú: Registrar atletas]")
-    # Aquí se desarrollará el CRUD de atletas
-
-def menu_eventos():
-    print("\n[Submenú: Registrar eventos]")
-    # Aquí se desarrollará el CRUD de eventos
-
 def menu_marcas():
     print("\n[Submenú: Registrar marcas]")
     # Aquí se desarrollará el CRUD de marcas
