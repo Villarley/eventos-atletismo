@@ -16,7 +16,7 @@ def menu_pruebas(pruebas, categorias, disciplinas, marcas_por_evento):
         elif opcion == "2":
             consultar_prueba(pruebas)
         elif opcion == "3":
-            print("[Modificar prueba - pendiente]")
+            modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento)
         elif opcion == "4":
             print("[Eliminar prueba - pendiente]")
         elif opcion == "0":
@@ -79,3 +79,54 @@ def consultar_prueba(pruebas):
             break
     if not encontrada:
         print("No se encontró una prueba con ese código.")
+
+def modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento):
+    print("\nMODIFICAR PRUEBA")
+    codigo = input("Ingrese el código de la prueba a modificar: ").strip().upper()
+
+    prueba_existente = None
+    for i, prueba in enumerate(pruebas):
+        if prueba[0] == codigo:
+            prueba_existente = (i, prueba)
+            break
+
+    if not prueba_existente:
+        print("No se encontró una prueba con ese código.")
+        return
+
+    eventos = []
+    for evento in marcas_por_evento:
+        for p in evento[1:]:
+            if p[0] == codigo:
+                eventos.append(evento[0])
+
+    if eventos:
+        print("ESTA PRUEBA ESTÁ REGISTRADA EN UN EVENTO, NO SE PUEDE MODIFICAR")
+        print("Eventos asociados:", eventos)
+        return
+
+    nombre = input("Nuevo nombre de la prueba (3 a 30 caracteres): ").strip()
+    if not (3 <= len(nombre) <= 30):
+        print("Nombre inválido.")
+        return
+
+    categoria = input("Nueva categoría (U12-U20, MAYOR, MASTER): ").strip().upper()
+    if categoria not in categorias:
+        print("Categoría inválida.")
+        return
+
+    sexo = input("Nuevo sexo (F/M): ").strip().upper()
+    if sexo not in ("F", "M"):
+        print("Sexo inválido.")
+        return
+
+    print("Disciplinas disponibles:")
+    for d in disciplinas:
+        print("-", d[0])
+    disciplina = input("Nueva disciplina: ").strip()
+    if disciplina not in [d[0] for d in disciplinas]:
+        print("Disciplina no encontrada.")
+        return
+
+    pruebas[prueba_existente[0]] = (codigo, nombre, categoria, sexo, disciplina)
+    print("Prueba modificada con éxito.")
