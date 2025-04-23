@@ -32,6 +32,6 @@ Desarrollado para practicar:
 - Documentación y pruebas
 
 ## 👨‍💻 Autor
-- Nombre: [Tu nombre aquí]
+- Nombre: Santiago Villarreal Arley
 - Versión: 1.0
 - Fecha: Abril 2025
