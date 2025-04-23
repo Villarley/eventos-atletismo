@@ -14,7 +14,7 @@ def menu_pruebas(pruebas, categorias, disciplinas, marcas_por_evento):
         if opcion == "1":
             agregar_prueba(pruebas, categorias, disciplinas)
         elif opcion == "2":
-            print("[Consultar prueba - pendiente]")
+            consultar_prueba(pruebas)
         elif opcion == "3":
             print("[Modificar prueba - pendiente]")
         elif opcion == "4":
@@ -63,3 +63,19 @@ def agregar_prueba(pruebas, categorias, disciplinas):
         pruebas.append((codigo, nombre, categoria, sexo, disciplina))
         print("Prueba agregada con éxito.\n")
         break
+
+def consultar_prueba(pruebas):
+    print("\nCONSULTAR PRUEBA")
+    codigo = input("Ingrese el código de la prueba: ").strip().upper()
+    encontrada = False
+    for prueba in pruebas:
+        if prueba[0] == codigo:
+            print(f"Código: {prueba[0]}")
+            print(f"Nombre: {prueba[1]}")
+            print(f"Categoría: {prueba[2]}")
+            print(f"Sexo: {prueba[3]}")
+            print(f"Disciplina: {prueba[4]}")
+            encontrada = True
+            break
+    if not encontrada:
+        print("No se encontró una prueba con ese código.")
