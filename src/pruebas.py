@@ -1,126 +1,118 @@
-# atletas.py
-import re
-from datetime import datetime
+# pruebas.py
 
-def menu_atletas(atletas):
+def menu_pruebas(pruebas, categorias, disciplinas, marcas_por_evento):
     while True:
-        print("\nREGISTRAR ATLETAS")
-        print("1. Agregar atleta")
-        print("2. Consultar atleta")
-        print("3. Modificar atleta")
-        print("4. Eliminar atleta")
+        print("\nREGISTRAR PRUEBAS POR DISCIPLINA")
+        print("1. Agregar prueba")
+        print("2. Consultar prueba")
+        print("3. Modificar prueba")
+        print("4. Eliminar prueba")
         print("0. Volver al menú principal")
 
         opcion = input("OPCIÓN _ ")
 
         if opcion == "1":
-            agregar_atleta(atletas)
+            agregar_prueba(pruebas, categorias, disciplinas)
         elif opcion == "2":
-            consultar_atleta(atletas)
+            consultar_prueba(pruebas)
         elif opcion == "3":
-            modificar_atleta(atletas)
+            modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento)
         elif opcion == "4":
-            eliminar_atleta(atletas)
+            eliminar_prueba(pruebas, marcas_por_evento)
         elif opcion == "0":
             break
         else:
             print("Opción inválida. Intente de nuevo.")
 
-def agregar_atleta(atletas):
-    print("\nAGREGAR ATLETA")
+def agregar_prueba(pruebas, categorias, disciplinas):
+    print("\nAGREGAR PRUEBA")
+    while True:
+        codigo = input("Código de la prueba (3 caracteres, letras/números): ").strip().upper()
+        if codigo == "C":
+            break
+        if len(codigo) != 3 or not codigo.isalnum():
+            print("Código inválido. Intente de nuevo.")
+            continue
+        if any(p[0] == codigo for p in pruebas):
+            print("ESTA PRUEBA YA ESTÁ REGISTRADA, NO SE PUEDE AGREGAR")
+            continue
 
-    identificacion = input("Identificación (única, 9-20 caracteres): ").strip()
-    if not (9 <= len(identificacion) <= 20):
-        print("Identificación inválida.")
-        return
-    if any(a[0] == identificacion for a in atletas):
-        print("YA EXISTE UN ATLETA CON ESA IDENTIFICACIÓN")
+        nombre = input("Nombre de la prueba (3 a 30 caracteres): ").strip()
+        if not (3 <= len(nombre) <= 30):
+            print("Nombre inválido.")
+            continue
+
+        categoria = input("Categoría (U12-U20, MAYOR, MASTER): ").strip().upper()
+        if categoria not in categorias:
+            print("Categoría inválida.")
+            continue
+
+        sexo = input("Sexo (F/M): ").strip().upper()
+        if sexo not in ("F", "M"):
+            print("Sexo inválido.")
+            continue
+
+        print("Disciplinas disponibles:")
+        for d in disciplinas:
+            print("-", d[0])
+        disciplina = input("Nombre de la disciplina: ").strip()
+        if disciplina not in [d[0] for d in disciplinas]:
+            print("Disciplina no encontrada.")
+            continue
+
+        pruebas.append((codigo, nombre, categoria, sexo, disciplina))
+        print("Prueba agregada con éxito.\n")
+        break
+
+def consultar_prueba(pruebas):
+    print("\nCONSULTAR PRUEBA")
+    codigo = input("Ingrese el código de la prueba: ").strip().upper()
+    encontrada = False
+    for prueba in pruebas:
+        if prueba[0] == codigo:
+            print(f"Código: {prueba[0]}")
+            print(f"Nombre: {prueba[1]}")
+            print(f"Categoría: {prueba[2]}")
+            print(f"Sexo: {prueba[3]}")
+            print(f"Disciplina: {prueba[4]}")
+            encontrada = True
+            break
+    if not encontrada:
+        print("No se encontró una prueba con ese código.")
+
+def modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento):
+    print("\nMODIFICAR PRUEBA")
+    codigo = input("Ingrese el código de la prueba a modificar: ").strip().upper()
+
+    prueba_existente = None
+    for i, prueba in enumerate(pruebas):
+        if prueba[0] == codigo:
+            prueba_existente = (i, prueba)
+            break
+
+    if not prueba_existente:
+        print("No se encontró una prueba con ese código.")
         return
 
-    nombre = input("Nombre (2-20 caracteres): ").strip()
-    if not (2 <= len(nombre) <= 20):
+    eventos = []
+    for evento in marcas_por_evento:
+        for p in evento[1:]:
+            if p[0] == codigo:
+                eventos.append(evento[0])
+
+    if eventos:
+        print("ESTA PRUEBA ESTÁ REGISTRADA EN UN EVENTO, NO SE PUEDE MODIFICAR")
+        print("Eventos asociados:", eventos)
+        return
+
+    nombre = input("Nuevo nombre de la prueba (3 a 30 caracteres): ").strip()
+    if not (3 <= len(nombre) <= 30):
         print("Nombre inválido.")
         return
 
-    apellido = input("Apellido (2-20 caracteres): ").strip()
-    if not (2 <= len(apellido) <= 20):
-        print("Apellido inválido.")
-        return
-
-    sexo = input("Sexo (F/M): ").strip().upper()
-    if sexo not in ("F", "M"):
-        print("Sexo inválido.")
-        return
-
-    pais = input("País (código ISO alfa-3): ").strip().upper()
-    if len(pais) != 3:
-        print("Código de país inválido.")
-        return
-
-    fecha_nacimiento = input("Fecha de nacimiento (YYYY-MM-DD): ").strip()
-    try:
-        datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
-    except ValueError:
-        print("Formato de fecha inválido.")
-        return
-
-    correo = input("Correo electrónico: ").strip()
-    if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$', correo):
-        print("Formato de correo inválido.")
-        return
-    dominio = correo.split("@")[1]
-    if dominio not in ["gmail.com", "yahoo.com", "outlook.com", "tec.ac.cr"]:
-        print("Dominio de correo no permitido.")
-        return
-
-    telefono = input("Teléfono (8-25 caracteres): ").strip()
-    if not (8 <= len(telefono) <= 25):
-        print("Teléfono inválido.")
-        return
-
-    atletas.append((identificacion, nombre, apellido, sexo, pais, fecha_nacimiento, correo, telefono))
-    print("Atleta registrado con éxito.")
-
-def consultar_atleta(atletas):
-    print("\nCONSULTAR ATLETA")
-    identificacion = input("Ingrese la identificación del atleta: ").strip()
-    encontrado = False
-    for atleta in atletas:
-        if atleta[0] == identificacion:
-            print(f"Identificación: {atleta[0]}")
-            print(f"Nombre: {atleta[1]} {atleta[2]}")
-            print(f"Sexo: {atleta[3]}")
-            print(f"País: {atleta[4]}")
-            print(f"Fecha de nacimiento: {atleta[5]}")
-            print(f"Correo electrónico: {atleta[6]}")
-            print(f"Teléfono: {atleta[7]}")
-            encontrado = True
-            break
-    if not encontrado:
-        print("No se encontró un atleta con esa identificación.")
-
-def modificar_atleta(atletas):
-    print("\nMODIFICAR ATLETA")
-    identificacion = input("Ingrese la identificación del atleta a modificar: ").strip()
-
-    indice = None
-    for i, atleta in enumerate(atletas):
-        if atleta[0] == identificacion:
-            indice = i
-            break
-
-    if indice is None:
-        print("No se encontró un atleta con esa identificación.")
-        return
-
-    nombre = input("Nuevo nombre (2-20 caracteres): ").strip()
-    if not (2 <= len(nombre) <= 20):
-        print("Nombre inválido.")
-        return
-
-    apellido = input("Nuevo apellido (2-20 caracteres): ").strip()
-    if not (2 <= len(apellido) <= 20):
-        print("Apellido inválido.")
+    categoria = input("Nueva categoría (U12-U20, MAYOR, MASTER): ").strip().upper()
+    if categoria not in categorias:
+        print("Categoría inválida.")
         return
 
     sexo = input("Nuevo sexo (F/M): ").strip().upper()
@@ -128,47 +120,45 @@ def modificar_atleta(atletas):
         print("Sexo inválido.")
         return
 
-    pais = input("Nuevo país (ISO alfa-3): ").strip().upper()
-    if len(pais) != 3:
-        print("Código de país inválido.")
+    print("Disciplinas disponibles:")
+    for d in disciplinas:
+        print("-", d[0])
+    disciplina = input("Nueva disciplina: ").strip()
+    if disciplina not in [d[0] for d in disciplinas]:
+        print("Disciplina no encontrada.")
         return
 
-    fecha_nacimiento = input("Nueva fecha de nacimiento (YYYY-MM-DD): ").strip()
-    try:
-        datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
-    except ValueError:
-        print("Formato de fecha inválido.")
+    pruebas[prueba_existente[0]] = (codigo, nombre, categoria, sexo, disciplina)
+    print("Prueba modificada con éxito.")
+
+def eliminar_prueba(pruebas, marcas_por_evento):
+    print("\nELIMINAR PRUEBA")
+    codigo = input("Ingrese el código de la prueba a eliminar: ").strip().upper()
+
+    prueba_existente = None
+    for i, prueba in enumerate(pruebas):
+        if prueba[0] == codigo:
+            prueba_existente = i
+            break
+
+    if prueba_existente is None:
+        print("No se encontró una prueba con ese código.")
         return
 
-    correo = input("Nuevo correo electrónico: ").strip()
-    if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$', correo):
-        print("Formato de correo inválido.")
-        return
-    dominio = correo.split("@")[1]
-    if dominio not in ["gmail.com", "yahoo.com", "outlook.com", "tec.ac.cr"]:
-        print("Dominio de correo no permitido.")
-        return
+    eventos = []
+    for evento in marcas_por_evento:
+        for p in evento[1:]:
+            if p[0] == codigo:
+                eventos.append(evento[0])
 
-    telefono = input("Nuevo teléfono (8-25 caracteres): ").strip()
-    if not (8 <= len(telefono) <= 25):
-        print("Teléfono inválido.")
+    if eventos:
+        print("ESTA PRUEBA ESTÁ REGISTRADA EN UN EVENTO, NO SE PUEDE ELIMINAR")
+        print("Eventos asociados:", eventos)
         return
 
-    atletas[indice] = (identificacion, nombre, apellido, sexo, pais, fecha_nacimiento, correo, telefono)
-    print("Atleta modificado con éxito.")
-
-def eliminar_atleta(atletas):
-    print("\nELIMINAR ATLETA")
-    identificacion = input("Ingrese la identificación del atleta a eliminar: ").strip()
-
-    for i, atleta in enumerate(atletas):
-        if atleta[0] == identificacion:
-            confirmar = input(f"¿Está seguro que desea eliminar al atleta {atleta[1]} {atleta[2]}? (S/N): ").strip().upper()
-            if confirmar == "S":
-                del atletas[i]
-                print("Atleta eliminado con éxito.")
-            else:
-                print("Eliminación cancelada.")
-            return
-
-    print("No se encontró un atleta con esa identificación.")
+    confirmacion = input("¿Está seguro que desea eliminar esta prueba? (S/N): ").strip().upper()
+    if confirmacion == "S":
+        del pruebas[prueba_existente]
+        print("Prueba eliminada con éxito.")
+    else:
+        print("Eliminación cancelada.")
