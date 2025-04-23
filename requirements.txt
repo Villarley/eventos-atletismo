@@ -1,0 +1,2 @@
+fpdf==1.7.2         # Para generar archivos PDF
+validators==0.20.0    # Para validación de emails (opcional pero útil)
