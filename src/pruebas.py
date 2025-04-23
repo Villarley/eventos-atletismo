@@ -18,7 +18,7 @@ def menu_pruebas(pruebas, categorias, disciplinas, marcas_por_evento):
         elif opcion == "3":
             modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento)
         elif opcion == "4":
-            print("[Eliminar prueba - pendiente]")
+            eliminar_prueba(pruebas, marcas_por_evento)
         elif opcion == "0":
             break
         else:
@@ -130,3 +130,35 @@ def modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento):
 
     pruebas[prueba_existente[0]] = (codigo, nombre, categoria, sexo, disciplina)
     print("Prueba modificada con éxito.")
+
+def eliminar_prueba(pruebas, marcas_por_evento):
+    print("\nELIMINAR PRUEBA")
+    codigo = input("Ingrese el código de la prueba a eliminar: ").strip().upper()
+
+    prueba_existente = None
+    for i, prueba in enumerate(pruebas):
+        if prueba[0] == codigo:
+            prueba_existente = i
+            break
+
+    if prueba_existente is None:
+        print("No se encontró una prueba con ese código.")
+        return
+
+    eventos = []
+    for evento in marcas_por_evento:
+        for p in evento[1:]:
+            if p[0] == codigo:
+                eventos.append(evento[0])
+
+    if eventos:
+        print("ESTA PRUEBA ESTÁ REGISTRADA EN UN EVENTO, NO SE PUEDE ELIMINAR")
+        print("Eventos asociados:", eventos)
+        return
+
+    confirmacion = input("¿Está seguro que desea eliminar esta prueba? (S/N): ").strip().upper()
+    if confirmacion == "S":
+        del pruebas[prueba_existente]
+        print("Prueba eliminada con éxito.")
+    else:
+        print("Eliminación cancelada.")
