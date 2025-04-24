@@ -1,10 +1,14 @@
 # eventos_de_atletismo.py
 
 import re
+import os
+import platform
 from datetime import datetime
 from pruebas import menu_pruebas  # Importamos el menú de pruebas desde módulo externo
 from eventos import menu_eventos  # Importamos el menú de eventos desde módulo externo
 from atletas import menu_atletas  # Importamos el menú de atletas desde módulo externo
+from marcas import menu_marcas  # Importamos el menú de marcas desde módulo externo
+from analisis import menu_analisis  # Importamos el menú de análisis desde módulo externo
 # ----------------------------
 # Estructuras de datos globales
 # ----------------------------
@@ -20,10 +24,33 @@ disciplinas = [
 ]
 
 categorias = ("U12", "U13", "U14", "U15", "U16", "U17", "U18", "U20", "MAYOR", "MASTER")
-pruebas = []
-atletas = []
-eventos = []
-marcas_por_evento = []
+
+pruebas = [
+    ("V01", "100m planos", "U18", "M", "Carreras de velocidad"),
+    ("S02", "Salto largo", "MAYOR", "F", "Saltos")
+]
+
+atletas = [
+    ("A001", "Juan", "Pérez", "M", "CRC", "2007-06-01", "villarley.softdev@gmail.com", "88888888"),
+    ("A002", "María", "Soto", "F", "CRC", "1999-03-15", "jsebascp04@gmail.com", "87777777"),
+    ("A003", "Carlos", "Ramírez", "M", "CRC", "2001-01-10", "santivillarley1010@gmail.com", "83334444"),
+    ("A004", "Lucía", "Gómez", "F", "CRC", "2003-11-23", "s.villarreal.1@estudiantec.cr", "81112222")
+]
+
+eventos = [
+    (101, "Nacionales Juveniles", "CRC", "San José", "2025-05-01", "2025-05-05"),
+    (102, "Open Atletismo", "CRC", "Cartago", "2025-04-20", "2025-04-22")
+]
+
+marcas_por_evento = [
+    [101,
+        ["V01", ("A001", 1, "11.23"), ("A003", 2, "11.45")],
+        ["S02", ("A002", 4, "5.42"), ("A004", 5, "5.12")]
+    ],
+    [102,
+        ["V01", ("A001", 6, "11.10"), ("A003", 7, "11.50")]
+    ]
+]
 
 # ----------------------------
 # Utilidades y validaciones
@@ -73,13 +100,13 @@ def menu_principal():
         elif opcion == "2":
             menu_pruebas(pruebas, categorias, disciplinas, marcas_por_evento)
         elif opcion == "3":
-            menu_atletas()
+            menu_atletas(atletas)
         elif opcion == "4":
-            menu_eventos()
+            menu_eventos(eventos)
         elif opcion == "5":
-            menu_marcas()
+            menu_marcas(marcas_por_evento, pruebas, atletas, eventos)
         elif opcion == "6":
-            menu_analisis()
+            menu_analisis(marcas_por_evento)
         elif opcion == "7":
             mostrar_ayuda()
         elif opcion == "8":
@@ -100,17 +127,20 @@ def listar_disciplinas():
         medida_texto = "Tiempo" if medida == "T" else "Metros"
         print(f"{nombre:<30} {medida_texto}")
     input("\nPresione ENTER para continuar...")
-def menu_marcas():
-    print("\n[Submenú: Registrar marcas]")
-    # Aquí se desarrollará el CRUD de marcas
-
-def menu_analisis():
-    print("\n[Submenú: Análisis de datos]")
-    # Aquí se desarrollará el análisis y generación de reportes en PDF
 
 def mostrar_ayuda():
-    print("\n[Manual de usuario en PDF desplegado aquí]")
-    # Simulación de mostrar ayuda
+    print("\nAbriendo manual de usuario...")
+    ruta_manual = "../docs/manual_usuario.pdf"
+
+    if os.path.exists(ruta_manual):
+        if platform.system() == "Windows":
+            os.startfile(ruta_manual)
+        elif platform.system() == "Darwin":  # macOS
+            os.system(f"open '{ruta_manual}'")
+        else:  # Linux y otros
+            os.system(f"xdg-open '{ruta_manual}'")
+    else:
+        print("No se encontró el archivo del manual en docs/manual_usuario.pdf")
 
 def mostrar_acerca_de():
     print("\nPrograma: Eventos de Atletismo\nVersión: 1.0\nAutor: Santiago Villarreal Arley\nFecha: Abril 2025")
