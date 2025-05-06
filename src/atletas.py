@@ -1,8 +1,23 @@
-# atletas.py
+# --------------------------------------------------
+# MÓDULO: GESTIÓN DE ATLETAS - EVENTOS DE ATLETISMO
+# Autor: Santiago Villarreal Arley
+# Carné: 2025120897
+# Fecha: 27 de abril 2025
+# --------------------------------------------------
+
 import re
 from datetime import datetime
 
 def menu_atletas(atletas):
+    """
+    Despliega el menú para gestionar atletas y redirige según la opción ingresada.
+
+    Entradas:
+    - atletas (list): lista de tuplas con los datos de los atletas registrados.
+
+    Salidas:
+    - Navegación interactiva por consola.
+    """
     while True:
         print("\nREGISTRAR ATLETAS")
         print("1. Agregar atleta")
@@ -20,13 +35,22 @@ def menu_atletas(atletas):
         elif opcion == "3":
             modificar_atleta(atletas)
         elif opcion == "4":
-            print("[Eliminar atleta - pendiente]")
+            eliminar_atleta(atletas)
         elif opcion == "0":
             break
         else:
             print("Opción inválida. Intente de nuevo.")
 
 def agregar_atleta(atletas):
+    """
+    Permite ingresar un nuevo atleta al sistema validando sus datos.
+
+    Entradas:
+    - atletas (list): lista de atletas donde se agregará el nuevo registro.
+
+    Salidas:
+    - Modifica la lista 'atletas' añadiendo el nuevo atleta si es válido.
+    """
     print("\nAGREGAR ATLETA")
 
     identificacion = input("Identificación (única, 9-20 caracteres): ").strip()
@@ -82,6 +106,15 @@ def agregar_atleta(atletas):
     print("Atleta registrado con éxito.")
 
 def consultar_atleta(atletas):
+    """
+    Busca e imprime los datos de un atleta por su identificación.
+
+    Entradas:
+    - atletas (list): lista de atletas registrados.
+
+    Salidas:
+    - Visualización por consola si el atleta fue encontrado.
+    """
     print("\nCONSULTAR ATLETA")
     identificacion = input("Ingrese la identificación del atleta: ").strip()
     encontrado = False
@@ -100,6 +133,15 @@ def consultar_atleta(atletas):
         print("No se encontró un atleta con esa identificación.")
 
 def modificar_atleta(atletas):
+    """
+    Permite modificar la información completa de un atleta existente.
+
+    Entradas:
+    - atletas (list): lista de atletas.
+
+    Salidas:
+    - Actualiza los datos del atleta si es encontrado y las entradas son válidas.
+    """
     print("\nMODIFICAR ATLETA")
     identificacion = input("Ingrese la identificación del atleta a modificar: ").strip()
 
@@ -156,3 +198,32 @@ def modificar_atleta(atletas):
 
     atletas[indice] = (identificacion, nombre, apellido, sexo, pais, fecha_nacimiento, correo, telefono)
     print("Atleta modificado con éxito.")
+def eliminar_atleta(atletas):
+    """
+    Elimina un atleta del sistema si existe y el usuario lo confirma.
+
+    Entradas:
+    - atletas (list): lista de atletas registrados.
+
+    Salidas:
+    - Elimina el atleta de la lista si se confirma la acción.
+    """
+    print("\nELIMINAR ATLETA")
+    identificacion = input("Ingrese la identificación del atleta a eliminar: ").strip()
+
+    indice = None
+    for i, atleta in enumerate(atletas):
+        if atleta[0] == identificacion:
+            indice = i
+            break
+
+    if indice is None:
+        print("No se encontró un atleta con esa identificación.")
+        return
+
+    confirmar = input(f"¿Está seguro que desea eliminar al atleta '{atletas[indice][1]} {atletas[indice][2]}'? (S/N): ").strip().upper()
+    if confirmar == "S":
+        del atletas[indice]
+        print("Atleta eliminado con éxito.")
+    else:
+        print("Eliminación cancelada.")

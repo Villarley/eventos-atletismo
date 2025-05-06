@@ -1,6 +1,23 @@
-# pruebas.py
+# --------------------------------------------------
+# MÓDULO: GESTIÓN DE PRUEBAS POR DISCIPLINA
+# Autor: Santiago Villarreal Arley
+# Carné: 2025120897
+# Fecha: 2 de mayo 2025
+# --------------------------------------------------
 
 def menu_pruebas(pruebas, categorias, disciplinas, marcas_por_evento):
+    """
+    Muestra el menú principal para gestionar pruebas y redirige a cada función.
+
+    Entradas:
+    - pruebas (list): lista de pruebas registradas.
+    - categorias (tuple): categorías válidas por edad.
+    - disciplinas (list): lista de disciplinas disponibles.
+    - marcas_por_evento (list): estructura de marcas registradas por evento.
+
+    Salidas:
+    - Interacción por consola.
+    """
     while True:
         print("\nREGISTRAR PRUEBAS POR DISCIPLINA")
         print("1. Agregar prueba")
@@ -25,6 +42,17 @@ def menu_pruebas(pruebas, categorias, disciplinas, marcas_por_evento):
             print("Opción inválida. Intente de nuevo.")
 
 def agregar_prueba(pruebas, categorias, disciplinas):
+    """
+    Permite ingresar una nueva prueba, validando campos clave.
+
+    Entradas:
+    - pruebas (list): lista de pruebas existentes.
+    - categorias (tuple): conjunto de categorías válidas.
+    - disciplinas (list): lista de disciplinas válidas.
+
+    Salidas:
+    - Agrega la prueba si es válida.
+    """
     print("\nAGREGAR PRUEBA")
     while True:
         codigo = input("Código de la prueba (3 caracteres, letras/números): ").strip().upper()
@@ -65,6 +93,15 @@ def agregar_prueba(pruebas, categorias, disciplinas):
         break
 
 def consultar_prueba(pruebas):
+    """
+    Permite consultar una prueba por su código.
+
+    Entradas:
+    - pruebas (list): lista de pruebas.
+
+    Salidas:
+    - Muestra los detalles si la prueba existe.
+    """
     print("\nCONSULTAR PRUEBA")
     codigo = input("Ingrese el código de la prueba: ").strip().upper()
     encontrada = False
@@ -81,6 +118,18 @@ def consultar_prueba(pruebas):
         print("No se encontró una prueba con ese código.")
 
 def modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento):
+    """
+    Modifica una prueba si no está vinculada a ningún evento.
+
+    Entradas:
+    - pruebas (list): lista de pruebas.
+    - categorias (tuple): categorías válidas.
+    - disciplinas (list): lista de disciplinas válidas.
+    - marcas_por_evento (list): lista de eventos y pruebas con marcas.
+
+    Salidas:
+    - Actualiza la prueba si no está en uso.
+    """
     print("\nMODIFICAR PRUEBA")
     codigo = input("Ingrese el código de la prueba a modificar: ").strip().upper()
 
@@ -132,6 +181,16 @@ def modificar_prueba(pruebas, categorias, disciplinas, marcas_por_evento):
     print("Prueba modificada con éxito.")
 
 def eliminar_prueba(pruebas, marcas_por_evento):
+    """
+    Elimina una prueba si no está asociada a ningún evento.
+
+    Entradas:
+    - pruebas (list): lista de pruebas.
+    - marcas_por_evento (list): marcas agrupadas por evento y prueba.
+
+    Salidas:
+    - Elimina la prueba si es posible.
+    """
     print("\nELIMINAR PRUEBA")
     codigo = input("Ingrese el código de la prueba a eliminar: ").strip().upper()
 

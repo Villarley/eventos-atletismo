@@ -1,4 +1,10 @@
-# correo.py
+# --------------------------------------------------
+# MÓDULO: ENVÍO DE CORREOS - EVENTOS DE ATLETISMO
+# Autor: Santiago Villarreal Arley
+# Carné: 2025120897
+# Fecha: 27 de abril 2025
+# --------------------------------------------------
+
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -7,6 +13,19 @@ from email import encoders
 import os
 
 def enviar_reporte(destinatario, asunto, archivo_pdf, remitente, clave_app):
+    """
+    Envía un correo electrónico con un archivo PDF adjunto usando Gmail.
+    
+    Entradas:
+    - destinatario (str): dirección de correo del receptor
+    - asunto (str): asunto del correo
+    - archivo_pdf (str): ruta del archivo PDF a adjuntar
+    - remitente (str): dirección de correo del emisor
+    - clave_app (str): contraseña de aplicación de Gmail
+
+    Salidas:
+    - Imprime mensaje de éxito o error en consola
+    """
     mensaje = MIMEMultipart()
     mensaje['From'] = remitente
     mensaje['To'] = destinatario

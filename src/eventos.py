@@ -1,7 +1,22 @@
-# eventos.py
+# --------------------------------------------------
+# MÓDULO: GESTIÓN DE EVENTOS - EVENTOS DE ATLETISMO
+# Autor: Santiago Villarreal Arley
+# Carné: 2025120897
+# Fecha: 2 de mayo 2025
+# --------------------------------------------------
+
 from datetime import datetime
 
 def menu_eventos(eventos):
+    """
+    Muestra el menú principal de gestión de eventos y redirige a cada acción.
+
+    Entradas:
+    - eventos (list): lista de eventos existentes.
+
+    Salidas:
+    - Ejecuta interacciones de usuario por consola.
+    """
     while True:
         print("\nREGISTRAR EVENTOS")
         print("1. Agregar evento")
@@ -26,6 +41,15 @@ def menu_eventos(eventos):
             print("Opción inválida. Intente de nuevo.")
 
 def agregar_evento(eventos):
+    """
+    Permite agregar un nuevo evento validando sus atributos.
+
+    Entradas:
+    - eventos (list): lista de eventos donde se añadirá el nuevo evento.
+
+    Salidas:
+    - Agrega una nueva tupla de evento si los datos son válidos.
+    """
     print("\nAGREGAR EVENTO")
 
     try:
@@ -69,6 +93,15 @@ def agregar_evento(eventos):
     print("Evento registrado con éxito.")
 
 def consultar_evento(eventos):
+    """
+    Muestra los detalles de un evento según su ID.
+
+    Entradas:
+    - eventos (list): lista de eventos.
+
+    Salidas:
+    - Imprime por consola la información del evento, si existe.
+    """
     print("\nCONSULTAR EVENTO")
     try:
         id_evento = int(input("Ingrese el ID del evento: "))
@@ -89,6 +122,15 @@ def consultar_evento(eventos):
     print("No se encontró un evento con ese ID.")
 
 def modificar_evento(eventos):
+    """
+    Permite modificar todos los atributos de un evento dado su ID.
+
+    Entradas:
+    - eventos (list): lista de eventos.
+
+    Salidas:
+    - Actualiza la tupla del evento si el ID es válido.
+    """
     print("\nMODIFICAR EVENTO")
     try:
         id_evento = int(input("Ingrese el ID del evento a modificar: "))
@@ -132,6 +174,15 @@ def modificar_evento(eventos):
     print("No se encontró un evento con ese ID.")
 
 def eliminar_evento(eventos):
+    """
+    Permite eliminar un evento del sistema, solicitando confirmación previa.
+
+    Entradas:
+    - eventos (list): lista de eventos.
+
+    Salidas:
+    - Elimina el evento si se confirma la acción.
+    """
     print("\nELIMINAR EVENTO")
     try:
         id_evento = int(input("Ingrese el ID del evento a eliminar: "))

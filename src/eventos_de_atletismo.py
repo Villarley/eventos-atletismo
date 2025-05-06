@@ -1,5 +1,10 @@
 # eventos_de_atletismo.py
-
+# --------------------------------------------------
+# PROGRAMA: EVENTOS DE ATLETISMO
+# Autor: Santiago Villarreal Arley
+# Carné: 2025120897
+# Fecha: 27 de abril 2025
+# --------------------------------------------------
 import re
 import os
 import platform
@@ -9,6 +14,7 @@ from eventos import menu_eventos  # Importamos el menú de eventos desde módulo
 from atletas import menu_atletas  # Importamos el menú de atletas desde módulo externo
 from marcas import menu_marcas  # Importamos el menú de marcas desde módulo externo
 from analisis import menu_analisis  # Importamos el menú de análisis desde módulo externo
+
 # ----------------------------
 # Estructuras de datos globales
 # ----------------------------
@@ -56,10 +62,20 @@ marcas_por_evento = [
 # Utilidades y validaciones
 # ----------------------------
 def formato_valido_correo(correo):
+    """
+    Verifica si un correo tiene el formato correcto usando expresiones regulares.
+    Entradas: correo (str)
+    Salidas: True o False
+    """
     patron = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
     return re.match(patron, correo) is not None
 
 def dominio_valido(correo):
+    """
+    Verifica si el dominio del correo pertenece a una lista de dominios válidos.
+    Entradas: correo (str)
+    Salidas: True o False
+    """
     dominios_validos = ["gmail.com", "yahoo.com", "outlook.com", "tec.ac.cr"]
     try:
         dominio = correo.split('@')[1]
@@ -68,6 +84,11 @@ def dominio_valido(correo):
         return False
 
 def prueba_en_eventos(codigo_prueba):
+    """
+    Revisa si una prueba está asociada a algún evento.
+    Entradas: codigo_prueba (str)
+    Salidas: Lista de IDs de eventos donde se encontró la prueba
+    """
     eventos_con_prueba = []
     for evento in marcas_por_evento:
         id_evento = evento[0]
@@ -81,6 +102,11 @@ def prueba_en_eventos(codigo_prueba):
 # Menú principal
 # ----------------------------
 def menu_principal():
+    """
+    Despliega el menú principal del sistema y redirige a cada módulo según la opción ingresada.
+    Entradas: ninguna
+    Salidas: ninguna (interfaz interactiva en consola)
+    """
     while True:
         print("\nEVENTOS DE ATLETISMO")
         print("1. Lista de disciplinas")
@@ -121,6 +147,11 @@ def menu_principal():
 # Funcionalidades
 # ----------------------------
 def listar_disciplinas():
+    """
+    Muestra por consola la lista de disciplinas disponibles y su tipo de medición.
+    Entradas: ninguna
+    Salidas: visualización en consola
+    """
     print("\nLISTA DE DISCIPLINAS")
     print(f"{'NOMBRE DE LA DISCIPLINA':<30} {'MEDIDA'}")
     for nombre, medida in disciplinas:
@@ -129,8 +160,13 @@ def listar_disciplinas():
     input("\nPresione ENTER para continuar...")
 
 def mostrar_ayuda():
+    """
+    Abre el manual de usuario en formato PDF desde la carpeta docs.
+    Entradas: ninguna
+    Salidas: abre el archivo si existe
+    """
     print("\nAbriendo manual de usuario...")
-    ruta_manual = "../docs/manual_usuario.pdf"
+    ruta_manual = "../docs/manual_de_usuario_eventos_de_atletismo.pdf"
 
     if os.path.exists(ruta_manual):
         if platform.system() == "Windows":
@@ -140,9 +176,14 @@ def mostrar_ayuda():
         else:  # Linux y otros
             os.system(f"xdg-open '{ruta_manual}'")
     else:
-        print("No se encontró el archivo del manual en docs/manual_usuario.pdf")
+        print(f"No se encontró el archivo del manual en {ruta_manual}")
 
 def mostrar_acerca_de():
+    """
+    Muestra información del programa y autor.
+    Entradas: ninguna
+    Salidas: visualización en consola
+    """
     print("\nPrograma: Eventos de Atletismo\nVersión: 1.0\nAutor: Santiago Villarreal Arley\nFecha: Abril 2025")
 
 # ----------------------------

@@ -1,6 +1,23 @@
-# marcas.py
+# --------------------------------------------------
+# MÓDULO: GESTIÓN DE MARCAS - EVENTOS DE ATLETISMO
+# Autor: Santiago Villarreal Arley
+# Carné: 2025120897
+# Fecha: 1 de mayo 2025
+# --------------------------------------------------
 
 def menu_marcas(marcas_por_evento, pruebas, atletas, eventos):
+    """
+    Despliega el menú de gestión de marcas y redirige a las opciones correspondientes.
+
+    Entradas:
+    - marcas_por_evento (list): lista anidada de marcas agrupadas por evento y prueba.
+    - pruebas (list): lista de pruebas registradas.
+    - atletas (list): lista de atletas.
+    - eventos (list): lista de eventos.
+
+    Salidas:
+    - Interacción de usuario por consola.
+    """
     while True:
         print("\nREGISTRAR MARCAS")
         print("1. Agregar marca")
@@ -22,6 +39,18 @@ def menu_marcas(marcas_por_evento, pruebas, atletas, eventos):
             print("Opción inválida. Intente de nuevo.")
 
 def agregar_marca(marcas_por_evento, pruebas, atletas, eventos):
+    """
+    Registra una nueva marca para un atleta en una prueba específica de un evento.
+
+    Entradas:
+    - marcas_por_evento (list): lista anidada que contiene marcas organizadas por evento.
+    - pruebas (list): lista de pruebas.
+    - atletas (list): lista de atletas.
+    - eventos (list): lista de eventos.
+
+    Salidas:
+    - Modifica la estructura de marcas_por_evento si la marca es válida.
+    """
     print("\nAGREGAR MARCA")
     try:
         id_evento = int(input("ID del evento: "))
@@ -51,16 +80,13 @@ def agregar_marca(marcas_por_evento, pruebas, atletas, eventos):
 
     marca = input("Marca (formato según tipo de prueba): ").strip()
 
-    # Buscar evento existente en la lista
     evento = next((e for e in marcas_por_evento if e[0] == id_evento), None)
     if evento:
-        # Buscar prueba dentro del evento
         for p in evento[1:]:
             if p[0] == codigo_prueba:
                 p.append((id_atleta, dorsal, marca))
                 print("Marca agregada correctamente.")
                 return
-        # Si la prueba no está en el evento, se agrega con la marca
         evento.append([codigo_prueba, (id_atleta, dorsal, marca)])
     else:
         marcas_por_evento.append([id_evento, [codigo_prueba, (id_atleta, dorsal, marca)]])
@@ -68,6 +94,16 @@ def agregar_marca(marcas_por_evento, pruebas, atletas, eventos):
     print("Marca agregada correctamente.")
 
 def consultar_marcas_por_evento(marcas_por_evento, eventos):
+    """
+    Muestra todas las marcas registradas en un evento específico.
+
+    Entradas:
+    - marcas_por_evento (list): lista de marcas.
+    - eventos (list): lista de eventos disponibles.
+
+    Salidas:
+    - Muestra marcas organizadas por prueba en consola.
+    """
     print("\nCONSULTAR MARCAS POR EVENTO")
     try:
         id_evento = int(input("ID del evento: "))
@@ -87,6 +123,16 @@ def consultar_marcas_por_evento(marcas_por_evento, eventos):
     print("No hay marcas registradas para ese evento.")
 
 def consultar_marcas_por_atleta(marcas_por_evento, atletas):
+    """
+    Muestra todas las marcas asociadas a un atleta específico.
+
+    Entradas:
+    - marcas_por_evento (list): lista de marcas.
+    - atletas (list): lista de atletas.
+
+    Salidas:
+    - Imprime todas las marcas del atleta si existen.
+    """
     print("\nCONSULTAR MARCAS POR ATLETA")
     id_atleta = input("ID del atleta: ").strip()
 
